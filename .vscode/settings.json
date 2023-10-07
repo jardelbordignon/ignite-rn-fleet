@@ -1,5 +1,11 @@
 {
-  "files.associations": {
-    "plyconfig.json": "jsonc"
-  }
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.insertFinalNewline": true,
+    "source.formatDocument": true,
+    "source.fixAll.eslint": true
+  },
+  "files.autoSave": "onFocusChange"
 }
