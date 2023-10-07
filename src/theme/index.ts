@@ -13,20 +13,19 @@ export default {
     GRAY_800: '#202024',
     GRAY_700: '#29292E',
     GRAY_600: '#323238',
-
   },
   FONT_FAMILY: {
     REGULAR: 'Roboto_400Regular',
-    BOLD: 'Roboto_700Bold'
+    BOLD: 'Roboto_700Bold',
   },
 
   FONT_SIZE: {
-    XS: 12,
-    SM: 14,
-    MD: 16,
-    LG: 18,
-    XL: 20,
-    XXL: 24,
-    XXXL: 32,
-  }
-};
+    XS: '12px',
+    SM: '14px',
+    MD: '16px',
+    LG: '18px',
+    XL: '20px',
+    XXL: '24px',
+    XXXL: '32px',
+  },
+}
