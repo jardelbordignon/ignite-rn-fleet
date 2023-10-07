@@ -1,0 +1,41 @@
+// ${1:snake_to_camel} => ${1/(.*)/${1:/camelcase}/} // result is "snakeToCamel"
+// ${2:snake_to_pascal} => ${2/(.*)/${1:/pascalcase}/} // result is "SnakeToPascal"
+// ${3:camelToPascal} => ${3/(.*)/${1:/capitalize}/} // result is "CamelToPascal"
+
+{
+  "React Native Functional Component": {
+    "prefix": "sc",
+    "body": [
+      "import * as S from './styles'",
+      "$2",
+      "export function ${TM_DIRECTORY/^.+\\/(.*)$/${1:/pascalcase}/}() {",
+      "  return (",
+      "    <S.root>",
+      "      <S.title>${TM_DIRECTORY/^.+\\/(.*)$/${1:/pascalcase}/}</S.title>",
+      "    </S.root>",
+      "  )",
+      "}",
+      "$2"
+    ],
+    "description": "React Native Styled Component"
+  },
+ 
+  "React Native Styled Components File": {
+    "prefix": "scf",
+    "body": [
+      "import styled from 'styled-components/native'",
+      "$2",
+      "export const root = styled.View`",
+      "  flex: 1;",
+      "  align-items: center;",
+      "  justify-content: center;",
+      "`",
+      "$2",
+      "export const title = styled.Text`",
+      "  font-size: 32px;",
+      "`",
+      "$2"
+    ],
+    "description": "React Native Styled Component File"
+  }
+}
