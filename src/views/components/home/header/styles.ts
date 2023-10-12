@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native'
+import { Power } from 'phosphor-react-native'
 
 export const root = styled.View`
   width: 100%;
@@ -28,3 +29,8 @@ export const name = styled.Text`
     font-family: ${theme.FONT_FAMILY.BOLD};
   `}
 `
+
+export const powerSvg = styled(Power).attrs(({ theme }) => ({
+  size: 32,
+  color: theme.COLORS.GRAY_400,
+}))``

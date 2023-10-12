@@ -19,8 +19,10 @@
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-web-browser": "~12.3.2",
+    "phosphor-react-native": "^1.1.2",
     "react": "18.2.0",
     "react-native": "0.72.5",
+    "react-native-svg": "13.9.0",
     "realm": "^12.2.1",
     "styled-components": "^6.0.8"
   },
