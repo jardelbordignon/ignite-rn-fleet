@@ -8,9 +8,9 @@ import { StatusBar } from 'react-native'
 import { ThemeProvider } from 'styled-components/native'
 
 import { REALM_APP_ID } from '@env'
+import { Routes } from 'src/routes'
 import { Loading } from 'src/views/components/loading'
 import { SignIn } from 'src/views/screens/account/sign-in'
-import { Home } from 'src/views/screens/home'
 import theme from 'src/theme'
 
 export default function App() {
@@ -23,7 +23,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <StatusBar backgroundColor="transparent" translucent />
         <UserProvider fallback={SignIn}>
-          <Home />
+          <Routes />
         </UserProvider>
       </ThemeProvider>
     </AppProvider>
