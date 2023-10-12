@@ -1,9 +1,10 @@
+import { Header } from 'src/views/components/header'
 import * as S from './styles'
 
 export function Departure() {
   return (
     <S.root>
-      <S.title>Departure</S.title>
+      <Header title="Saída" />
     </S.root>
   )
 }
