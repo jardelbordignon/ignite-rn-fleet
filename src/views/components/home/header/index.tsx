@@ -1,10 +1,15 @@
-import { useUser } from '@realm/react'
+import { useApp, useUser } from '@realm/react'
 import { Pressable } from 'react-native'
 
 import * as S from './styles'
 
 export function HomeHeader() {
+  const app = useApp()
   const user = useUser()
+
+  const handleLogout = () => {
+    app.currentUser?.logOut()
+  }
 
   return (
     <S.root>
@@ -17,7 +22,7 @@ export function HomeHeader() {
         <S.name>{user?.profile.name}</S.name>
       </S.greeting>
 
-      <Pressable>
+      <Pressable onPress={handleLogout}>
         <S.powerSvg />
       </Pressable>
     </S.root>
