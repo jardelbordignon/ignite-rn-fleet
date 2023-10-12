@@ -5,6 +5,7 @@ export const root = styled.View`
   background-color: ${({ theme }) => theme.COLORS.GRAY_800};
 `
 
-export const title = styled.Text`
-  font-size: 32px;
+export const content = styled.View`
+  flex: 1;
+  padding: 0 32px;
 `
