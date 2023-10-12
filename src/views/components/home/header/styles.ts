@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native'
 import { Power } from 'phosphor-react-native'
+import { Image } from 'expo-image'
 
 export const root = styled.View`
   width: 100%;
@@ -34,3 +35,9 @@ export const powerSvg = styled(Power).attrs(({ theme }) => ({
   size: 32,
   color: theme.COLORS.GRAY_400,
 }))``
+
+export const picture = styled(Image)`
+  width: 54px;
+  height: 54px;
+  border-radius: 7px;
+`
