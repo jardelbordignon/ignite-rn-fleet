@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components/native'
 import { Car, Key } from 'phosphor-react-native'
 
-export const root = styled.View`
+export const root = styled.Pressable`
   width: 100%;
   margin: 32px 0;
   padding: 22px;
