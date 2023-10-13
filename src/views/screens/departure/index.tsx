@@ -13,7 +13,7 @@ export function Departure() {
           label="Placa do veículo"
           placeholder="BRA-1B34"
           value={plate}
-          onChangeText={text => setPlate(text.toUpperCase())}
+          onChangeText={setPlate}
         />
       </S.content>
     </S.root>

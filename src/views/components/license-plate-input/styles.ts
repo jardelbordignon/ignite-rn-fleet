@@ -18,6 +18,7 @@ export const label = styled.Text`
 
 export const input = styled(MaskInput).attrs(({ theme }) => ({
   placeholderTextColor: theme.COLORS.GRAY_400,
+  autoCapitalize: 'characters',
 }))`
   ${({ theme }) => css`
     color: ${theme.COLORS.GRAY_200};
