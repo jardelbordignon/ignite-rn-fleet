@@ -1,4 +1,9 @@
-import { Header, LicensePlateInput, TextAreaInput } from 'src/views/components'
+import {
+  Button,
+  Header,
+  LicensePlateInput,
+  TextAreaInput,
+} from 'src/views/components'
 
 import * as S from './styles'
 import { useState } from 'react'
@@ -17,6 +22,8 @@ export function Departure() {
         />
 
         <TextAreaInput label="Finalidade" />
+
+        <Button title="Registrar Saída" />
       </S.content>
     </S.root>
   )
