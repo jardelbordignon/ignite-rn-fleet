@@ -1,4 +1,4 @@
-import { Header, LicensePlateInput } from 'src/views/components'
+import { Header, LicensePlateInput, TextAreaInput } from 'src/views/components'
 
 import * as S from './styles'
 import { useState } from 'react'
@@ -15,6 +15,8 @@ export function Departure() {
           value={plate}
           onChangeText={setPlate}
         />
+
+        <TextAreaInput label="Finalidade" />
       </S.content>
     </S.root>
   )
