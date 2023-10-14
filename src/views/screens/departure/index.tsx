@@ -18,7 +18,12 @@ export function Departure() {
 
   const handleDepartureRegister = () => {
     if (!licensePlateValidate(licensePlate)) {
-      Alert.alert('Informe corretamente a placa do veículo')
+      Alert.alert('Placa inválida', 'Informe corretamente a placa do veículo')
+    }
+
+    if (description.trim().length) {
+      descriptionRef.current?.focus()
+      Alert.alert('Finalidade', 'Informe a finalidade da utilização do veículo')
     }
   }
 
