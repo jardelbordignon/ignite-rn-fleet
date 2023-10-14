@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { TextInput } from 'react-native'
+import { TextInput, ScrollView } from 'react-native'
 
 import {
   Button,
@@ -21,25 +21,30 @@ export function Departure() {
   return (
     <S.root>
       <Header title="Saída" />
-      <S.content>
-        <LicensePlateInput
-          label="Placa do veículo"
-          placeholder="BRA-1B34"
-          value={plate}
-          onChangeText={setPlate}
-          onSubmitEditing={() => descriptionRef.current?.focus()}
-          returnKeyType="next"
-        />
 
-        <TextAreaInput
-          ref={descriptionRef}
-          label="Finalidade"
-          returnKeyType="send"
-          onSubmitEditing={handleDepartureRegister}
-        />
+      <S.keyboardAvoidingView>
+        <ScrollView>
+          <S.content>
+            <LicensePlateInput
+              label="Placa do veículo"
+              placeholder="BRA-1B34"
+              value={plate}
+              onChangeText={setPlate}
+              onSubmitEditing={() => descriptionRef.current?.focus()}
+              returnKeyType="next"
+            />
 
-        <Button title="Registrar Saída" onPress={handleDepartureRegister} />
-      </S.content>
+            <TextAreaInput
+              ref={descriptionRef}
+              label="Finalidade"
+              returnKeyType="send"
+              onSubmitEditing={handleDepartureRegister}
+            />
+
+            <Button title="Registrar Saída" onPress={handleDepartureRegister} />
+          </S.content>
+        </ScrollView>
+      </S.keyboardAvoidingView>
     </S.root>
   )
 }

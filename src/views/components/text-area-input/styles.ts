@@ -24,7 +24,8 @@ export const input = styled.TextInput.attrs(({ theme }) => ({
     color: ${theme.COLORS.GRAY_200};
     font-size: ${theme.FONT_SIZE.MD};
     font-family: ${theme.FONT_FAMILY.REGULAR};
-    vertical-align: top;
-    margin-top: 16px;
   `}
+  vertical-align: top;
+  margin-top: 16px;
+  min-height: 100px;
 `
