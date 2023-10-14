@@ -1,3 +1,6 @@
+import { useRef, useState } from 'react'
+import { TextInput } from 'react-native'
+
 import {
   Button,
   Header,
@@ -6,10 +9,15 @@ import {
 } from 'src/views/components'
 
 import * as S from './styles'
-import { useState } from 'react'
 
 export function Departure() {
-  const [plate, setPlate] = useState('')
+  const descriptionRef = useRef<TextInput>(null)
+  const [plate, setPlate] = useState<string>()
+
+  const handleDepartureRegister = () => {
+    console.log('Ok')
+  }
+
   return (
     <S.root>
       <Header title="Saída" />
@@ -19,11 +27,18 @@ export function Departure() {
           placeholder="BRA-1B34"
           value={plate}
           onChangeText={setPlate}
+          onSubmitEditing={() => descriptionRef.current?.focus()}
+          returnKeyType="next"
         />
 
-        <TextAreaInput label="Finalidade" />
+        <TextAreaInput
+          ref={descriptionRef}
+          label="Finalidade"
+          returnKeyType="send"
+          onSubmitEditing={handleDepartureRegister}
+        />
 
-        <Button title="Registrar Saída" />
+        <Button title="Registrar Saída" onPress={handleDepartureRegister} />
       </S.content>
     </S.root>
   )
