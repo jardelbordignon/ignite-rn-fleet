@@ -12,7 +12,7 @@ export const TextAreaInput = forwardRef<TextInput, Props>(
     return (
       <S.root>
         <S.label>{label}</S.label>
-        <S.input ref={ref} placeholder="Vou utilizar o veículo para..." {...rest} />
+        <S.input ref={ref} {...rest} />
       </S.root>
     )
   }

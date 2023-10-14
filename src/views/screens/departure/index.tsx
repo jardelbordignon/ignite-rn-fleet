@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
-import { TextInput, ScrollView } from 'react-native'
+import { Alert, TextInput, ScrollView } from 'react-native'
 
+import { licensePlateValidate } from 'src/utils/validators'
 import {
   Button,
   Header,
@@ -11,11 +12,14 @@ import {
 import * as S from './styles'
 
 export function Departure() {
+  const [licensePlate, setLicensePlate] = useState('')
+  const [description, setDescription] = useState('')
   const descriptionRef = useRef<TextInput>(null)
-  const [plate, setPlate] = useState<string>()
 
   const handleDepartureRegister = () => {
-    console.log('Ok')
+    if (!licensePlateValidate(licensePlate)) {
+      Alert.alert('Informe corretamente a placa do veículo')
+    }
   }
 
   return (
@@ -28,8 +32,8 @@ export function Departure() {
             <LicensePlateInput
               label="Placa do veículo"
               placeholder="BRA-1B34"
-              value={plate}
-              onChangeText={setPlate}
+              value={licensePlate}
+              onChangeText={setLicensePlate}
               onSubmitEditing={() => descriptionRef.current?.focus()}
               returnKeyType="next"
             />
@@ -37,8 +41,12 @@ export function Departure() {
             <TextAreaInput
               ref={descriptionRef}
               label="Finalidade"
-              returnKeyType="send"
+              placeholder="Vou utilizar o veículo para..."
+              blurOnSubmit
+              value={description}
+              onChangeText={setDescription}
               onSubmitEditing={handleDepartureRegister}
+              returnKeyType="send"
             />
 
             <Button title="Registrar Saída" onPress={handleDepartureRegister} />
