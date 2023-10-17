@@ -7,7 +7,7 @@ type Props = PressableProps & {
 }
 
 export function CarStatus({ licensePlate, ...rest }: Props) {
-  const StyledIcon = licensePlate ? S.keySvg : S.carSvg
+  const StyledIcon = licensePlate ? S.carSvg : S.keySvg
   const status = licensePlate ? 'chegada' : 'saída'
   const message = licensePlate
     ? `Veículo ${licensePlate} em uso. `
