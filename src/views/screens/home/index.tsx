@@ -15,7 +15,7 @@ export function Home({ navigation }: NavigationProps) {
 
   const handleRegisterMovement = () => {
     if (vehicleInUse?._id) {
-      navigation.navigate('arrival', { id: vehicleInUse._id })
+      navigation.navigate('arrival', { id: vehicleInUse._id.toString() })
     } else {
       navigation.navigate('departure')
     }
