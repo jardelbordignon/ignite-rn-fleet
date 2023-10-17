@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 
 import type { NavigationProps } from 'src/types/navigation'
-import { useQuery } from 'src/libs/realm'
+import { useQuery, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
 import { CarStatus } from 'src/views/components/car/status'
 import { HomeHeader } from 'src/views/components/home/header'
@@ -12,6 +12,7 @@ export function Home({ navigation }: NavigationProps) {
   const [vehicleInUse, setVehicleInUse] = useState<Historic>()
 
   const historic = useQuery(Historic)
+  const realm = useRealm()
 
   const handleRegisterMovement = () => {
     if (vehicleInUse?._id) {
@@ -21,7 +22,7 @@ export function Home({ navigation }: NavigationProps) {
     }
   }
 
-  const fetchVehicle = () => {
+  const fetchVehicleInUse = () => {
     try {
       const vehicle = historic.filtered("status = 'departure'")[0]
       setVehicleInUse(vehicle)
@@ -31,7 +32,10 @@ export function Home({ navigation }: NavigationProps) {
     }
   }
 
-  useEffect(fetchVehicle, [])
+  useEffect(() => {
+    realm.addListener('change', fetchVehicleInUse)
+    return () => realm.removeListener('change', fetchVehicleInUse)
+  }, [])
 
   return (
     <S.root>
