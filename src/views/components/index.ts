@@ -1,4 +1,5 @@
 export * from './button'
+export * from './button-icon'
 export * from './header'
 export * from './license-plate-input'
 export * from './loading'

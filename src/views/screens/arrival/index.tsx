@@ -1,5 +1,7 @@
+import { X } from 'phosphor-react-native'
+
 import type { ArrivalNavigationProps } from 'src/types/navigation'
-import { Button, Header } from 'src/views/components'
+import { Button, ButtonIcon, Header } from 'src/views/components'
 import * as S from './styles'
 
 export function Arrival({ navigation, route }: ArrivalNavigationProps) {
@@ -20,6 +22,7 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
         </S.description>
 
         <S.footer>
+          <ButtonIcon icon={X} />
           <Button title="Registrar chegada" />
         </S.footer>
       </S.content>
