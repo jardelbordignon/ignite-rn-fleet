@@ -8,6 +8,14 @@ type GenerateProps = {
 }
 
 export class Historic extends Realm.Object<Historic> {
+  _id!: string
+  user_id!: string
+  license_plate!: string
+  description!: string
+  status!: string
+  created_at!: Date
+  updated_at!: Date
+
   static generate({ user_id, description, license_plate }: GenerateProps) {
     const at = new Date()
 

@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Alert } from 'react-native'
 
 import type { NavigationProps } from 'src/types/navigation'
 import { useQuery } from 'src/libs/realm'
@@ -8,6 +9,8 @@ import { HomeHeader } from 'src/views/components/home/header'
 import * as S from './styles'
 
 export function Home({ navigation }: NavigationProps) {
+  const [vehicleInUse, setVehicleInUse] = useState<Historic>()
+
   const historic = useQuery(Historic)
 
   const handleRegisterMovement = () => {
@@ -15,7 +18,13 @@ export function Home({ navigation }: NavigationProps) {
   }
 
   const fetchVehicle = () => {
-    console.log(historic)
+    try {
+      const vehicle = historic.filtered("status = 'departure'")[0]
+      setVehicleInUse(vehicle)
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Veículo em uso', 'Não foi possível carregar o veículo em uso.')
+    }
   }
 
   useEffect(fetchVehicle, [])
@@ -25,7 +34,10 @@ export function Home({ navigation }: NavigationProps) {
       <HomeHeader />
 
       <S.content>
-        <CarStatus onPress={handleRegisterMovement} />
+        <CarStatus
+          licensePlate={vehicleInUse?.license_plate}
+          onPress={handleRegisterMovement}
+        />
       </S.content>
     </S.root>
   )
