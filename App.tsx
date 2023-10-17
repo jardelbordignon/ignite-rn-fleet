@@ -1,3 +1,4 @@
+import 'react-native-get-random-values'
 import { AppProvider, UserProvider } from '@realm/react'
 import {
   useFonts,
