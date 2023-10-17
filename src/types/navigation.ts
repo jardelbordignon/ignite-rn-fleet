@@ -7,3 +7,7 @@ export type NavigationParamList = {
 }
 
 export type NavigationProps = NativeStackScreenProps<NavigationParamList, any>
+export type ArrivalNavigationProps = NativeStackScreenProps<
+  NavigationParamList,
+  'arrival'
+>
