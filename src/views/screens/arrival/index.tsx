@@ -1,7 +1,9 @@
+'use strict'
 import { X } from 'phosphor-react-native'
+import { Alert } from 'react-native'
 import { BSON } from 'realm'
 
-import { useObject } from 'src/libs/realm'
+import { useObject, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
 import type { ArrivalNavigationProps } from 'src/types/navigation'
 import { Button, ButtonIcon, Header } from 'src/views/components'
@@ -11,6 +13,22 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   const { id } = route.params
 
   const historic = useObject(Historic, new BSON.UUID(id))
+  const realm = useRealm()
+
+  const removeVehicleUsage = () => {
+    realm.write(() => {
+      realm.delete(historic)
+    })
+
+    navigation.goBack()
+  }
+
+  const handleRemoveVehicleUsage = () => {
+    Alert.alert('Cancelar', 'Cancelar a utilização do veículo', [
+      { text: 'Não', style: 'cancel' },
+      { text: 'Sim', onPress: removeVehicleUsage },
+    ])
+  }
 
   return (
     <S.root>
@@ -24,7 +42,7 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
         <S.description>{historic?.description}</S.description>
 
         <S.footer>
-          <ButtonIcon icon={X} />
+          <ButtonIcon icon={X} onPress={handleRemoveVehicleUsage} />
           <Button title="Registrar chegada" />
         </S.footer>
       </S.content>
