@@ -1,4 +1,5 @@
 import type { ArrivalNavigationProps } from 'src/types/navigation'
+import { Button, Header } from 'src/views/components'
 import * as S from './styles'
 
 export function Arrival({ navigation, route }: ArrivalNavigationProps) {
@@ -6,7 +7,22 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
 
   return (
     <S.root>
-      <S.title>Arrival {id}</S.title>
+      <Header title="Chegada" />
+      <S.content>
+        <S.label>Placa do veículo</S.label>
+        <S.licensePlate>ABC-1B34</S.licensePlate>
+
+        <S.label>Finalidade</S.label>
+        <S.description>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum vitae nemo
+          facilis iure magni corporis soluta consectetur, voluptates excepturi culpa,
+          dolore velit nobis quidem molestias suscipit ab! Alias, delectus incidunt.
+        </S.description>
+
+        <S.footer>
+          <Button title="Registrar chegada" />
+        </S.footer>
+      </S.content>
     </S.root>
   )
 }
