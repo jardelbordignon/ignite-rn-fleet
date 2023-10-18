@@ -33,6 +33,7 @@ export function Home({ navigation }: NavigationProps) {
   }
 
   useEffect(() => {
+    fetchVehicleInUse()
     realm.addListener('change', fetchVehicleInUse)
     return () => realm.removeListener('change', fetchVehicleInUse)
   }, [])
