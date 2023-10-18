@@ -38,11 +38,11 @@ export const textHighlight = styled.Text`
 `
 
 export const carSvg = styled(Car).attrs(({ theme }) => ({
-  size: 32,
+  size: 52,
   color: theme.COLORS.BRAND_LIGHT,
 }))``
 
 export const keySvg = styled(Key).attrs(({ theme }) => ({
-  size: 32,
+  size: 52,
   color: theme.COLORS.BRAND_LIGHT,
 }))``

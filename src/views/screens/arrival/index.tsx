@@ -57,18 +57,18 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
 
         <S.label>Finalidade</S.label>
         <S.description>{historicItem?.description}</S.description>
-
-        {isVehicleInUse && (
-          <S.footer>
-            <ButtonIcon icon={X} onPress={handleCancelDeparture} />
-            <Button
-              title="Registrar chegada"
-              disabled={!historicItem}
-              onPress={handleArrivalRegister}
-            />
-          </S.footer>
-        )}
       </S.content>
+
+      {isVehicleInUse && (
+        <S.footer>
+          <ButtonIcon icon={X} onPress={handleCancelDeparture} />
+          <Button
+            title="Registrar chegada"
+            disabled={!historicItem}
+            onPress={handleArrivalRegister}
+          />
+        </S.footer>
+      )}
     </S.root>
   )
 }
