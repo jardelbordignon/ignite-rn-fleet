@@ -1,13 +1,13 @@
-import { Platform } from 'react-native'
 import styled from 'styled-components/native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export const root = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.GRAY_800};
 `
 
-export const keyboardAvoidingView = styled.KeyboardAvoidingView.attrs({
-  behavior: Platform.OS === 'android' ? 'height' : 'position',
+export const keyboardAwareScrollView = styled(KeyboardAwareScrollView).attrs({
+  extraHeight: 100,
 })``
 
 export const content = styled.View`

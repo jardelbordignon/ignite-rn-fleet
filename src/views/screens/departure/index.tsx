@@ -69,7 +69,7 @@ export function Departure({ navigation }: NavigationProps) {
     <S.root>
       <Header title="Saída" />
 
-      <S.keyboardAvoidingView>
+      <S.keyboardAwareScrollView>
         <ScrollView>
           <S.content>
             <LicensePlateInput
@@ -100,7 +100,7 @@ export function Departure({ navigation }: NavigationProps) {
             />
           </S.content>
         </ScrollView>
-      </S.keyboardAvoidingView>
+      </S.keyboardAwareScrollView>
     </S.root>
   )
 }
