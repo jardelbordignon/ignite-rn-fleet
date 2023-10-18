@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components/native'
 import * as S from './styles'
 
 export type HistoryCardProps = {
+  id: string
   licensePlate: string
   created: string
   isSync: boolean
