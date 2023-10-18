@@ -1,6 +1,7 @@
 export * from './button'
 export * from './button-icon'
 export * from './header'
+export * from './history-card'
 export * from './license-plate-input'
 export * from './loading'
 export * from './text-area-input'
