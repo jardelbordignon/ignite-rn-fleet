@@ -10,7 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components/native'
 
 import { REALM_APP_ID } from '@env'
-import { RealmProvider } from 'src/libs/realm'
+import { RealmProvider, syncConfiguration } from 'src/libs/realm'
 import { Routes } from 'src/routes'
 import { Loading } from 'src/views/components/loading'
 import { SignIn } from 'src/views/screens/account/sign-in'
@@ -27,7 +27,7 @@ export default function App() {
         <SafeAreaProvider style={{ flex: 1, backgroundColor: theme.COLORS.GRAY_800 }}>
           <StatusBar backgroundColor="transparent" translucent />
           <UserProvider fallback={SignIn}>
-            <RealmProvider>
+            <RealmProvider sync={syncConfiguration} fallback={Loading}>
               <Routes />
             </RealmProvider>
           </UserProvider>

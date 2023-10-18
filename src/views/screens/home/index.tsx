@@ -1,3 +1,4 @@
+import { useUser } from '@realm/react'
 import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 
@@ -15,6 +16,7 @@ export function Home({ navigation }: NavigationProps) {
 
   const historic = useQuery(Historic)
   const realm = useRealm()
+  const user = useUser()
 
   const handleRegisterMovement = () => {
     if (vehicleInUse?._id) {
@@ -74,6 +76,16 @@ export function Home({ navigation }: NavigationProps) {
       }
     }
   }, [])
+
+  useEffect(() => {
+    realm.subscriptions.update((mutableSubs, realm) => {
+      const historyByUserQuery = realm
+        .objects('Historic')
+        .filtered(`user_id = '${user.id}'`)
+
+      mutableSubs.add(historyByUserQuery, { name: 'historic_by_user' })
+    })
+  }, [realm])
 
   return (
     <S.root>
