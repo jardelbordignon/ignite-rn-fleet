@@ -32,6 +32,13 @@ export function Home({ navigation }: NavigationProps) {
     }
   }
 
+  const fetchHistoric = () => {
+    const response = historic.filtered("status = 'arrival' SORT(created_at DESC)")
+    console.log(response)
+  }
+
+  useEffect(fetchHistoric, [historic])
+
   useEffect(() => {
     fetchVehicleInUse()
     realm.addListener('change', fetchVehicleInUse)
