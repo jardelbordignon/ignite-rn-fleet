@@ -59,6 +59,10 @@ export function Home({ navigation }: NavigationProps) {
     }
   }
 
+  const showHistoryDetails = (id: string) => {
+    navigation.navigate('arrival', { id })
+  }
+
   useEffect(fetchHistoric, [historic])
 
   useEffect(() => {
@@ -82,7 +86,9 @@ export function Home({ navigation }: NavigationProps) {
         <FlatList
           data={vehicleHistory}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <HistoryCard data={item} />}
+          renderItem={({ item }) => (
+            <HistoryCard data={item} onPress={() => showHistoryDetails(item.id)} />
+          )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 100 }}
           ListEmptyComponent={

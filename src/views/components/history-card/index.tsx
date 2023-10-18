@@ -20,7 +20,7 @@ export function HistoryCard({ data, ...rest }: Props) {
   const { created, isSync, licensePlate } = data
 
   return (
-    <S.root {...rest}>
+    <S.root style={({ pressed }) => pressed && { opacity: 0.85 }} {...rest}>
       <S.info>
         <S.licensePlate>{licensePlate}</S.licensePlate>
         <S.departure>{created}</S.departure>

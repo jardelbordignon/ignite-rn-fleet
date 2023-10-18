@@ -15,6 +15,8 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   const historicItem = useObject(Historic, new BSON.UUID(id))
   const realm = useRealm()
 
+  const isVehicleInUse = historicItem?.status === 'departure'
+
   const cancelDeparture = () => {
     realm.write(() => {
       realm.delete(historicItem)
@@ -47,7 +49,7 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
 
   return (
     <S.root>
-      <Header title="Chegada" />
+      <Header title={isVehicleInUse ? 'Chegada' : 'Detalhes'} />
 
       <S.content>
         <S.label>Placa do veículo</S.label>
@@ -56,14 +58,16 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
         <S.label>Finalidade</S.label>
         <S.description>{historicItem?.description}</S.description>
 
-        <S.footer>
-          <ButtonIcon icon={X} onPress={handleCancelDeparture} />
-          <Button
-            title="Registrar chegada"
-            disabled={!historicItem}
-            onPress={handleArrivalRegister}
-          />
-        </S.footer>
+        {isVehicleInUse && (
+          <S.footer>
+            <ButtonIcon icon={X} onPress={handleCancelDeparture} />
+            <Button
+              title="Registrar chegada"
+              disabled={!historicItem}
+              onPress={handleArrivalRegister}
+            />
+          </S.footer>
+        )}
       </S.content>
     </S.root>
   )
