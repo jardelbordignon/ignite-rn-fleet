@@ -43,3 +43,14 @@ export const footer = styled.View`
   gap: 16px;
   padding: 32px;
 `
+
+export const syncMessage = styled.Text`
+  ${({ theme }) => css`
+    color: ${theme.COLORS.GRAY_300};
+    font-family: ${theme.FONT_FAMILY.REGULAR};
+    font-size: ${theme.FONT_SIZE.SM};
+  `}
+  text-align: center;
+  flex: 1;
+  margin: 32px;
+`

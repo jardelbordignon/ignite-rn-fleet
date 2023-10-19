@@ -1,8 +1,9 @@
-'use strict'
 import { X } from 'phosphor-react-native'
+import { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import { BSON } from 'realm'
 
+import { getLastSyncTimestamp } from 'src/libs/mmvk/sync-storage'
 import { useObject, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
 import type { ArrivalNavigationProps } from 'src/types/navigation'
@@ -10,6 +11,7 @@ import { Button, ButtonIcon, Header } from 'src/views/components'
 import * as S from './styles'
 
 export function Arrival({ navigation, route }: ArrivalNavigationProps) {
+  const [dataNotSynced, setDataNotSynced] = useState(false)
   const { id } = route.params
 
   const historicItem = useObject(Historic, new BSON.UUID(id))
@@ -47,6 +49,11 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
     }
   }
 
+  useEffect(() => {
+    const lastSync = getLastSyncTimestamp()
+    setDataNotSynced(historicItem!.updated_at.getTime() > lastSync)
+  }, [])
+
   return (
     <S.root>
       <Header title={isVehicleInUse ? 'Chegada' : 'Detalhes'} />
@@ -68,6 +75,13 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
             onPress={handleArrivalRegister}
           />
         </S.footer>
+      )}
+
+      {dataNotSynced && (
+        <S.syncMessage>
+          Sincronização da{' '}
+          {historicItem?.status === 'departure' ? 'partida' : 'chegada'} pendente.
+        </S.syncMessage>
       )}
     </S.root>
   )
