@@ -7,7 +7,6 @@ export const root = styled.View`
   flex-direction: row;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.COLORS.GRAY_700};
-  z-index: 1;
 `
 
 export const title = styled.Text`

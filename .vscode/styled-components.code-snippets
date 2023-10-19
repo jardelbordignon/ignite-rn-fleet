@@ -19,20 +19,25 @@
     ],
     "description": "React Native Styled Component"
   },
- 
+
   "React Native Styled Components File": {
     "prefix": "scf",
     "body": [
-      "import styled from 'styled-components/native'",
+      "import styled, { css } from 'styled-components/native'",
       "$2",
       "export const root = styled.View`",
       "  flex: 1;",
       "  align-items: center;",
       "  justify-content: center;",
+      "  background-color: ${({ theme }) => theme.COLORS.GRAY_800};",
       "`",
       "$2",
       "export const title = styled.Text`",
-      "  font-size: 32px;",
+      "  ${({ theme }) => css`",
+      "    color: ${theme.COLORS.GRAY_100};",
+      "    font-size: ${theme.FONT_SIZE.MD};",
+      "    font-family: ${theme.FONT_FAMILY.REGULAR};",
+      "  `}",
       "`",
       "$2"
     ],
