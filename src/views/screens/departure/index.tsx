@@ -16,12 +16,14 @@ import {
   Button,
   Header,
   LicensePlateInput,
+  Loading,
   TextAreaInput,
 } from 'src/views/components'
 
 import * as S from './styles'
 
 export function Departure({ navigation }: NavigationProps) {
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [licensePlate, setLicensePlate] = useState('')
   const [description, setDescription] = useState('')
@@ -98,6 +100,9 @@ export function Departure({ navigation }: NavigationProps) {
           .catch(error => {
             console.log('error', error)
           })
+          .finally(() => {
+            setIsLoadingLocation(false)
+          })
       }
     ).then(response => {
       subscription = response
@@ -118,6 +123,8 @@ export function Departure({ navigation }: NavigationProps) {
       </S.root>
     )
   }
+
+  if (isLoadingLocation) return <Loading />
 
   return (
     <S.root>
