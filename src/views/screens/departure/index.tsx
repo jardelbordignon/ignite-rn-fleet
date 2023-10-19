@@ -1,7 +1,12 @@
 import { useUser } from '@realm/react'
 import { useRef, useState, useEffect } from 'react'
 import { Alert, TextInput, ScrollView } from 'react-native'
-import { useForegroundPermissions } from 'expo-location'
+import {
+  useForegroundPermissions,
+  watchPositionAsync,
+  LocationAccuracy,
+} from 'expo-location'
+import type { LocationSubscription } from 'expo-location'
 
 import { useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
@@ -26,7 +31,10 @@ export function Departure({ navigation }: NavigationProps) {
   const user = useUser()
   const realm = useRealm()
 
-  const [foregroundPermissions, getForegroundPermissions] = useForegroundPermissions()
+  const [locationForegroundPermissions, requestLocationForegroundPermissions] =
+    useForegroundPermissions()
+
+  const locationPermissionDenied = !locationForegroundPermissions?.granted
 
   const handleDepartureRegister = () => {
     try {
@@ -69,10 +77,30 @@ export function Departure({ navigation }: NavigationProps) {
   }
 
   useEffect(() => {
-    getForegroundPermissions()
+    requestLocationForegroundPermissions()
   }, [])
 
-  if (!foregroundPermissions?.granted) {
+  useEffect(() => {
+    if (locationPermissionDenied) return
+
+    let subscription: LocationSubscription
+
+    watchPositionAsync(
+      {
+        accuracy: LocationAccuracy.High,
+        timeInterval: 1000,
+      },
+      location => {
+        console.log('location', location)
+      }
+    ).then(response => {
+      subscription = response
+    })
+
+    return () => subscription?.remove()
+  }, [locationForegroundPermissions])
+
+  if (locationPermissionDenied) {
     return (
       <S.root>
         <Header title="Saída" />
