@@ -1,4 +1,5 @@
 import { Realm, useUser } from '@realm/react'
+import { CloudArrowUp } from 'phosphor-react-native'
 import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 import Toast from 'react-native-toast-message'
@@ -10,7 +11,7 @@ import {
 import { useQuery, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
 import type { NavigationProps } from 'src/types/navigation'
-import { HistoryCard, HistoryCardProps } from 'src/views/components'
+import { HistoryCard, HistoryCardProps, TopMessage } from 'src/views/components'
 import { CarStatus } from 'src/views/components/car/status'
 import { HomeHeader } from 'src/views/components/home/header'
 import * as S from './styles'
@@ -18,6 +19,7 @@ import * as S from './styles'
 export function Home({ navigation }: NavigationProps) {
   const [vehicleInUse, setVehicleInUse] = useState<Historic>()
   const [vehicleHistory, setVehicleHistory] = useState<HistoryCardProps[]>([])
+  const [percentageToSync, setPercentageToSync] = useState<string>()
 
   const historic = useQuery(Historic)
   const realm = useRealm()
@@ -76,9 +78,13 @@ export function Home({ navigation }: NavigationProps) {
   const progressNotification = (transferred: number, transferable: number) => {
     const percentage = (transferred / transferable) * 100
 
-    if (percentage === 100) {
+    if (percentage < 100) {
+      setPercentageToSync(`${percentage.toFixed(0)}% sincronizado.`)
+    } else {
       saveLastSyncTimestamp()
       fetchHistoric()
+      setPercentageToSync('')
+
       Toast.show({
         type: 'info',
         text1: 'Todos os dados estão sincronizados.',
@@ -124,6 +130,10 @@ export function Home({ navigation }: NavigationProps) {
 
   return (
     <S.root>
+      {percentageToSync && (
+        <TopMessage title={percentageToSync} icon={CloudArrowUp} />
+      )}
+
       <HomeHeader />
 
       <S.content>

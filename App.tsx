@@ -1,4 +1,5 @@
 import 'react-native-get-random-values'
+import { useNetInfo } from '@react-native-community/netinfo'
 import { WifiSlash } from 'phosphor-react-native'
 import { AppProvider, UserProvider } from '@realm/react'
 import {
@@ -9,7 +10,6 @@ import {
 import { StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ThemeProvider } from 'styled-components/native'
-import { useNetInfo } from '@react-native-community/netinfo'
 
 import { REALM_APP_ID } from '@env'
 import { RealmProvider, syncConfiguration } from 'src/libs/realm'
