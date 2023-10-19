@@ -1,6 +1,7 @@
 import { useUser } from '@realm/react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Alert, TextInput, ScrollView } from 'react-native'
+import { useForegroundPermissions } from 'expo-location'
 
 import { useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
@@ -24,6 +25,8 @@ export function Departure({ navigation }: NavigationProps) {
 
   const user = useUser()
   const realm = useRealm()
+
+  const [foregroundPermissions, getForegroundPermissions] = useForegroundPermissions()
 
   const handleDepartureRegister = () => {
     try {
@@ -63,6 +66,23 @@ export function Departure({ navigation }: NavigationProps) {
       Alert.alert('Erro', 'Não foi possível registrar a saída do veículo')
       setSubmitting(false)
     }
+  }
+
+  useEffect(() => {
+    getForegroundPermissions()
+  }, [])
+
+  if (!foregroundPermissions?.granted) {
+    return (
+      <S.root>
+        <Header title="Saída" />
+        <S.message>
+          Você precisa permitir que o aplicativo tenha acesso a localização para
+          utilizar essa funcionalidade. Por favor, acesse as configurações do seu
+          dispositivo para conceder essa permissão ao aplicativo.
+        </S.message>
+      </S.root>
+    )
   }
 
   return (
