@@ -6,7 +6,7 @@ import {
   watchPositionAsync,
   LocationAccuracy,
 } from 'expo-location'
-import type { LocationSubscription } from 'expo-location'
+import type { LocationGeocodedAddress, LocationSubscription } from 'expo-location'
 
 import { useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
@@ -17,6 +17,7 @@ import {
   Header,
   LicensePlateInput,
   Loading,
+  LocationInfo,
   TextAreaInput,
 } from 'src/views/components'
 
@@ -24,6 +25,7 @@ import * as S from './styles'
 
 export function Departure({ navigation }: NavigationProps) {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true)
+  const [currentAddress, setCurrentAddress] = useState<LocationGeocodedAddress>()
   const [submitting, setSubmitting] = useState(false)
   const [licensePlate, setLicensePlate] = useState('')
   const [description, setDescription] = useState('')
@@ -95,7 +97,7 @@ export function Departure({ navigation }: NavigationProps) {
       location => {
         getAddressLocation(location.coords)
           .then(address => {
-            console.log('address', address)
+            setCurrentAddress(address)
           })
           .catch(error => {
             console.log('error', error)
@@ -133,6 +135,13 @@ export function Departure({ navigation }: NavigationProps) {
       <S.keyboardAwareScrollView>
         <ScrollView>
           <S.content>
+            {currentAddress && (
+              <LocationInfo
+                label="Localização atual"
+                description={`${currentAddress.name}`}
+              />
+            )}
+
             <LicensePlateInput
               ref={licensePlateRef}
               label="Placa do veículo"
