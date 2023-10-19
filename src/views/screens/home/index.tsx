@@ -1,6 +1,7 @@
 import { Realm, useUser } from '@realm/react'
 import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
+import Toast from 'react-native-toast-message'
 
 import {
   getLastSyncTimestamp,
@@ -78,6 +79,10 @@ export function Home({ navigation }: NavigationProps) {
     if (percentage === 100) {
       saveLastSyncTimestamp()
       fetchHistoric()
+      Toast.show({
+        type: 'info',
+        text1: 'Todos os dados estão sincronizados.',
+      })
     }
   }
 
