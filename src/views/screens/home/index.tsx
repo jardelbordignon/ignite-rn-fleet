@@ -1,9 +1,14 @@
 import { Realm, useUser } from '@realm/react'
 import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
-import type { NavigationProps } from 'src/types/navigation'
+
+import {
+  getLastSyncTimestamp,
+  saveLastSyncTimestamp,
+} from 'src/libs/mmvk/sync-storage'
 import { useQuery, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
+import type { NavigationProps } from 'src/types/navigation'
 import { HistoryCard, HistoryCardProps } from 'src/views/components'
 import { CarStatus } from 'src/views/components/car/status'
 import { HomeHeader } from 'src/views/components/home/header'
@@ -38,6 +43,9 @@ export function Home({ navigation }: NavigationProps) {
   const fetchHistoric = () => {
     try {
       const data = historic.filtered("status = 'arrival' SORT(created_at DESC)")
+
+      const lastSync = getLastSyncTimestamp()
+
       const formattedVehicleHistory = data.map(item => {
         const [date, time] = item.created_at
           .toLocaleString('pt-BR', { hour12: false })
@@ -48,7 +56,7 @@ export function Home({ navigation }: NavigationProps) {
           id: item._id.toString(),
           licensePlate: item.license_plate,
           created: `Saída em ${date} às ${time}`,
-          isSync: false,
+          isSync: lastSync > item.updated_at.getTime(),
         }
         return historyCardData
       })
@@ -65,10 +73,12 @@ export function Home({ navigation }: NavigationProps) {
   }
 
   const progressNotification = (transferred: number, transferable: number) => {
-    //console.log('transferred', transferred)
-    //console.log('transferable', transferable)
     const percentage = (transferred / transferable) * 100
-    console.log('Transferido', `${percentage}%`)
+
+    if (percentage === 100) {
+      saveLastSyncTimestamp()
+      fetchHistoric()
+    }
   }
 
   useEffect(fetchHistoric, [historic])

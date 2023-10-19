@@ -13,6 +13,6 @@ export function saveLastSyncTimestamp() {
 
 export function getLastSyncTimestamp() {
   const timestamp = storage.getString(STORAGE_SYNC_KEY)
-  if (!timestamp) return undefined
+  if (!timestamp) return 0
   return +timestamp
 }
