@@ -1,7 +1,6 @@
-import { useUser } from '@realm/react'
+import { Realm, useUser } from '@realm/react'
 import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
-
 import type { NavigationProps } from 'src/types/navigation'
 import { useQuery, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
@@ -65,6 +64,13 @@ export function Home({ navigation }: NavigationProps) {
     navigation.navigate('arrival', { id })
   }
 
+  const progressNotification = (transferred: number, transferable: number) => {
+    //console.log('transferred', transferred)
+    //console.log('transferable', transferable)
+    const percentage = (transferred / transferable) * 100
+    console.log('Transferido', `${percentage}%`)
+  }
+
   useEffect(fetchHistoric, [historic])
 
   useEffect(() => {
@@ -86,6 +92,20 @@ export function Home({ navigation }: NavigationProps) {
       mutableSubs.add(historyByUserQuery, { name: 'historic_by_user' })
     })
   }, [realm])
+
+  useEffect(() => {
+    const syncSession = realm.syncSession
+
+    if (!syncSession) return
+
+    syncSession.addProgressNotification(
+      Realm.ProgressDirection.Upload,
+      Realm.ProgressMode.ReportIndefinitely,
+      progressNotification
+    )
+
+    return () => syncSession.removeProgressNotification(progressNotification)
+  }, [])
 
   return (
     <S.root>
