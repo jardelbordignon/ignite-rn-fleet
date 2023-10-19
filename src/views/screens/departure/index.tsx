@@ -11,7 +11,7 @@ import type { LocationSubscription } from 'expo-location'
 import { useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
 import type { NavigationProps } from 'src/types/navigation'
-import { licensePlateValidate } from 'src/utils/validators'
+import { getAddressLocation, licensePlateValidate } from 'src/utils'
 import {
   Button,
   Header,
@@ -91,7 +91,13 @@ export function Departure({ navigation }: NavigationProps) {
         timeInterval: 1000,
       },
       location => {
-        console.log('location', location)
+        getAddressLocation(location.coords)
+          .then(address => {
+            console.log('address', address)
+          })
+          .catch(error => {
+            console.log('error', error)
+          })
       }
     ).then(response => {
       subscription = response
