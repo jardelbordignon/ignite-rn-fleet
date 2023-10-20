@@ -15,6 +15,7 @@ import MapView, {
 } from 'react-native-maps'
 
 import { IconBox } from '../icon-box'
+import * as S from './styles'
 
 type Props = MapViewProps & {
   coords: LatLng[]
@@ -34,11 +35,10 @@ export function Map({ coords, delta = 0.005, ...rest }: Props) {
   }
 
   return (
-    <MapView
+    <S.mapView
       ref={mapRef}
       //provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
       provider={PROVIDER_GOOGLE}
-      style={{ width: '100%', height: 200 }}
       region={{
         latitude: lastCoord.latitude,
         longitude: lastCoord.longitude,
@@ -52,10 +52,14 @@ export function Map({ coords, delta = 0.005, ...rest }: Props) {
       </Marker>
 
       {coords.length > 1 && (
-        <Marker coordinate={lastCoord} identifier="arrival">
-          <IconBox size="SMALL" icon={FlagCheckered} />
-        </Marker>
+        <>
+          <Marker coordinate={lastCoord} identifier="arrival">
+            <IconBox size="SMALL" icon={FlagCheckered} />
+          </Marker>
+
+          <S.polyline coordinates={coords} />
+        </>
       )}
-    </MapView>
+    </S.mapView>
   )
 }
