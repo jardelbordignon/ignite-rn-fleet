@@ -6,6 +6,7 @@ import { BSON } from 'realm'
 import { getLastSyncTimestamp } from 'src/libs/mmvk/sync-storage'
 import { useObject, useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
+import { stoptLocationTask } from 'src/tasks/background-location'
 import type { ArrivalNavigationProps } from 'src/types/navigation'
 import { Button, ButtonIcon, Header } from 'src/views/components'
 import * as S from './styles'
@@ -34,8 +35,10 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
     ])
   }
 
-  const handleArrivalRegister = () => {
+  const handleArrivalRegister = async () => {
     try {
+      await stoptLocationTask()
+
       realm.write(() => {
         historicItem!.status = 'arrival'
         historicItem!.updated_at = new Date()
