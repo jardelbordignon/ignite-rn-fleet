@@ -6,10 +6,9 @@
  * https://stackoverflow.com/questions/53436368/react-native-maps-airgooglemaps-dir-must-be-added-to-your-xcode-project-to-supp
  */
 import { Car, FlagCheckered } from 'phosphor-react-native'
-import { Platform } from 'react-native'
+import { useRef } from 'react'
 import MapView, {
   PROVIDER_GOOGLE,
-  PROVIDER_DEFAULT,
   MapViewProps,
   Marker,
   LatLng,
@@ -23,12 +22,22 @@ type Props = MapViewProps & {
 }
 
 export function Map({ coords, delta = 0.005, ...rest }: Props) {
+  const mapRef = useRef<MapView>(null)
+
   const firstCoord = coords[0]
   const lastCoord = coords[coords.length - 1]
 
+  const onMapLoaded = async () => {
+    mapRef.current?.fitToSuppliedMarkers(['departure', 'arrival'], {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+    })
+  }
+
   return (
     <MapView
-      provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+      ref={mapRef}
+      //provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
+      provider={PROVIDER_GOOGLE}
       style={{ width: '100%', height: 200 }}
       region={{
         latitude: lastCoord.latitude,
@@ -36,13 +45,14 @@ export function Map({ coords, delta = 0.005, ...rest }: Props) {
         latitudeDelta: delta,
         longitudeDelta: delta,
       }}
+      onMapLoaded={onMapLoaded}
       {...rest}>
-      <Marker coordinate={firstCoord}>
+      <Marker coordinate={firstCoord} identifier="departure">
         <IconBox size="SMALL" icon={Car} />
       </Marker>
 
       {coords.length > 1 && (
-        <Marker coordinate={lastCoord}>
+        <Marker coordinate={lastCoord} identifier="arrival">
           <IconBox size="SMALL" icon={FlagCheckered} />
         </Marker>
       )}
