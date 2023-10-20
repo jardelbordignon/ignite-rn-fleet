@@ -1,7 +1,8 @@
 import { useUser } from '@realm/react'
 import { Car } from 'phosphor-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { Alert, TextInput, ScrollView } from 'react-native'
+import { TextInput, ScrollView } from 'react-native'
+import Toast from 'react-native-toast-message'
 import {
   useForegroundPermissions,
   watchPositionAsync,
@@ -48,18 +49,18 @@ export function Departure({ navigation }: NavigationProps) {
     try {
       if (!licensePlateValidate(licensePlate)) {
         licensePlateRef.current?.focus()
-        return Alert.alert(
-          'Placa inválida',
-          'Informe corretamente a placa do veículo'
-        )
+        return Toast.show({
+          type: 'info',
+          text1: 'Informe corretamente a placa do veículo',
+        })
       }
 
       if (!description.trim().length) {
         descriptionRef.current?.focus()
-        return Alert.alert(
-          'Finalidade',
-          'Informe a finalidade da utilização do veículo'
-        )
+        return Toast.show({
+          type: 'info',
+          text1: 'Informe a finalidade da utilização do veículo',
+        })
       }
 
       setSubmitting(true)
@@ -75,11 +76,18 @@ export function Departure({ navigation }: NavigationProps) {
         )
       })
 
-      Alert.alert('Saída', 'Saída do veículo registrada com sucesso!')
+      Toast.show({
+        type: 'success',
+        text1: 'Saída do veículo registrada com sucesso!',
+      })
+
       navigation.goBack()
     } catch (error) {
       console.log(error)
-      Alert.alert('Erro', 'Não foi possível registrar a saída do veículo')
+      Toast.show({
+        type: 'error',
+        text1: 'Não foi possível registrar a saída do veículo',
+      })
       setSubmitting(false)
     }
   }
