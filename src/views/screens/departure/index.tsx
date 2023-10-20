@@ -140,7 +140,17 @@ export function Departure({ navigation }: NavigationProps) {
 
       <S.keyboardAwareScrollView>
         <ScrollView>
-          {currentCoords && <Map coords={[currentCoords]} />}
+          {currentCoords && (
+            <Map
+              coords={[
+                currentCoords,
+                {
+                  latitude: -28.3034,
+                  longitude: -52.800004,
+                },
+              ]}
+            />
+          )}
           <S.content>
             {currentAddress && (
               <LocationInfo

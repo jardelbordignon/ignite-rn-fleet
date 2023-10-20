@@ -5,7 +5,7 @@
  * É possível habilitar o google maps pelo xcode ou usar o PROVIDER_DEFAULT que usa então o mapa da apple mesmo
  * https://stackoverflow.com/questions/53436368/react-native-maps-airgooglemaps-dir-must-be-added-to-your-xcode-project-to-supp
  */
-import { Car } from 'phosphor-react-native'
+import { Car, FlagCheckered } from 'phosphor-react-native'
 import { Platform } from 'react-native'
 import MapView, {
   PROVIDER_GOOGLE,
@@ -23,6 +23,7 @@ type Props = MapViewProps & {
 }
 
 export function Map({ coords, delta = 0.005, ...rest }: Props) {
+  const firstCoord = coords[0]
   const lastCoord = coords[coords.length - 1]
 
   return (
@@ -36,9 +37,15 @@ export function Map({ coords, delta = 0.005, ...rest }: Props) {
         longitudeDelta: delta,
       }}
       {...rest}>
-      <Marker coordinate={coords[0]}>
+      <Marker coordinate={firstCoord}>
         <IconBox size="SMALL" icon={Car} />
       </Marker>
+
+      {coords.length > 1 && (
+        <Marker coordinate={lastCoord}>
+          <IconBox size="SMALL" icon={FlagCheckered} />
+        </Marker>
+      )}
     </MapView>
   )
 }
