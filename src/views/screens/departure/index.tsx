@@ -1,4 +1,5 @@
 import { useUser } from '@realm/react'
+import { Car } from 'phosphor-react-native'
 import { useRef, useState, useEffect } from 'react'
 import { Alert, TextInput, ScrollView } from 'react-native'
 import {
@@ -137,6 +138,7 @@ export function Departure({ navigation }: NavigationProps) {
           <S.content>
             {currentAddress && (
               <LocationInfo
+                icon={Car}
                 label="Localização atual"
                 description={`${currentAddress.name}`}
               />
