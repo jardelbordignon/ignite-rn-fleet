@@ -4,11 +4,8 @@ import { useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 import Toast from 'react-native-toast-message'
 
-import {
-  getLastSyncTimestamp,
-  saveLastSyncTimestamp,
-} from 'src/libs/mmvk/sync-storage'
 import { useQuery, useRealm } from 'src/libs/realm'
+import { getLastSyncTimestamp, saveLastSyncTimestamp } from 'src/libs/storage/sync'
 import { Historic } from 'src/libs/realm/schemas'
 import type { NavigationProps } from 'src/types/navigation'
 import { HistoryCard, HistoryCardProps, TopMessage } from 'src/views/components'
