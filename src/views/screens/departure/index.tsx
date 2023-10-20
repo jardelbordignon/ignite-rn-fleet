@@ -1,10 +1,11 @@
 import { useUser } from '@realm/react'
 import { Car } from 'phosphor-react-native'
 import { useRef, useState, useEffect } from 'react'
-import { TextInput, ScrollView } from 'react-native'
+import { TextInput, ScrollView, Alert } from 'react-native'
 import Toast from 'react-native-toast-message'
 import {
   useForegroundPermissions,
+  requestBackgroundPermissionsAsync,
   watchPositionAsync,
   LocationAccuracy,
   LocationObjectCoords,
@@ -45,7 +46,7 @@ export function Departure({ navigation }: NavigationProps) {
 
   const locationPermissionDenied = !locationForegroundPermissions?.granted
 
-  const handleDepartureRegister = () => {
+  const handleDepartureRegister = async () => {
     try {
       if (!licensePlateValidate(licensePlate)) {
         licensePlateRef.current?.focus()
@@ -64,6 +65,17 @@ export function Departure({ navigation }: NavigationProps) {
       }
 
       setSubmitting(true)
+
+      const backgroundPermissions = await requestBackgroundPermissionsAsync()
+
+      if (!backgroundPermissions.granted) {
+        setSubmitting(false)
+
+        return Alert.alert(
+          'Localização',
+          'É necessario permitir que o app tenha acesso a localização em segundo plano. Acesse as configurações do dispositivo e habilite "Permitir o tempo todo".'
+        )
+      }
 
       realm.write(() => {
         realm.create(
