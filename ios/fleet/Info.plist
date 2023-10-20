@@ -34,6 +34,8 @@
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>GMSApiKey</key>
+    <string>AIzaSyAm84ohpeTQAl1DM9pJdfvi78Dr0y30B9s</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppTransportSecurity</key>
