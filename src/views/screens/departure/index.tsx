@@ -14,6 +14,7 @@ import type { LocationGeocodedAddress, LocationSubscription } from 'expo-locatio
 
 import { useRealm } from 'src/libs/realm'
 import { Historic } from 'src/libs/realm/schemas'
+import { startLocationTask } from 'src/tasks/background-location'
 import type { NavigationProps } from 'src/types/navigation'
 import { getAddressLocation, licensePlateValidate } from 'src/utils'
 import {
@@ -76,6 +77,8 @@ export function Departure({ navigation }: NavigationProps) {
           'É necessario permitir que o app tenha acesso a localização em segundo plano. Acesse as configurações do dispositivo e habilite "Permitir o tempo todo".'
         )
       }
+
+      await startLocationTask()
 
       realm.write(() => {
         realm.create(

@@ -40,7 +40,9 @@ export async function stoptLocationTask() {
 
 export async function startLocationTask() {
   try {
-    await stoptLocationTask()
+    const hasStarted = await hasStartedLocationUpdatesAsync(BACKGROUND_TASK_NAME)
+    if (hasStarted) return
+
     await startLocationUpdatesAsync(BACKGROUND_TASK_NAME, {
       accuracy: Accuracy.Highest,
       distanceInterval: 1,
