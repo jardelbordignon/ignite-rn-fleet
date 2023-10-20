@@ -6,6 +6,7 @@ import {
   useForegroundPermissions,
   watchPositionAsync,
   LocationAccuracy,
+  LocationObjectCoords,
 } from 'expo-location'
 import type { LocationGeocodedAddress, LocationSubscription } from 'expo-location'
 
@@ -19,6 +20,7 @@ import {
   LicensePlateInput,
   Loading,
   LocationInfo,
+  Map,
   TextAreaInput,
 } from 'src/views/components'
 
@@ -27,6 +29,7 @@ import * as S from './styles'
 export function Departure({ navigation }: NavigationProps) {
   const [isLoadingLocation, setIsLoadingLocation] = useState(true)
   const [currentAddress, setCurrentAddress] = useState<LocationGeocodedAddress>()
+  const [currentCoords, setCurrentCoords] = useState<LocationObjectCoords>()
   const [submitting, setSubmitting] = useState(false)
   const [licensePlate, setLicensePlate] = useState('')
   const [description, setDescription] = useState('')
@@ -96,6 +99,8 @@ export function Departure({ navigation }: NavigationProps) {
         timeInterval: 1000,
       },
       location => {
+        setCurrentCoords(location.coords)
+
         getAddressLocation(location.coords)
           .then(address => {
             setCurrentAddress(address)
@@ -135,6 +140,7 @@ export function Departure({ navigation }: NavigationProps) {
 
       <S.keyboardAwareScrollView>
         <ScrollView>
+          {currentCoords && <Map coords={[currentCoords]} />}
           <S.content>
             {currentAddress && (
               <LocationInfo
