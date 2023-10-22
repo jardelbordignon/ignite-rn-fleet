@@ -10,7 +10,24 @@ import { saveStorageLocation } from 'src/libs/storage/location'
 
 export const BACKGROUND_TASK_NAME = 'location-tracking'
 
-defineTask<any>(BACKGROUND_TASK_NAME, ({ data, error }) => {
+type Location = {
+  coords: {
+    altitude: number
+    altitudeAccuracy: number
+    latitude: number
+    accuracy: number
+    longitude: number
+    heading: number
+    speed: number
+  }
+  timestamp: number
+}
+
+type Data = {
+  locations: Location[]
+}
+
+defineTask<Data>(BACKGROUND_TASK_NAME, ({ data, error }) => {
   try {
     if (error) throw error
     if (!data) return
