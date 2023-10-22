@@ -6,11 +6,14 @@ import {
 } from 'expo-location'
 import { defineTask } from 'expo-task-manager'
 
+import { saveStorageLocation } from 'src/libs/storage/location'
+
 export const BACKGROUND_TASK_NAME = 'location-tracking'
 
 defineTask<any>(BACKGROUND_TASK_NAME, ({ data, error }) => {
   try {
     if (error) throw error
+    if (!data) return
 
     const { coords, timestamp } = data.locations[0]
 
@@ -20,9 +23,10 @@ defineTask<any>(BACKGROUND_TASK_NAME, ({ data, error }) => {
       timestamp,
     }
 
-    console.log(currentLocation)
+    saveStorageLocation(currentLocation)
   } catch (error) {
     console.log(error)
+    stoptLocationTask()
   }
 })
 
