@@ -5,11 +5,13 @@ import { LocationInfo, LocationInfoProps } from 'src/views/components'
 import * as S from './styles'
 
 type Props = {
-  departure: Omit<LocationInfoProps, 'icon'>
-  arrival: Omit<LocationInfoProps, 'icon'>
+  departure?: LocationInfoProps
+  arrival?: LocationInfoProps
 }
 
 export function Locations({ arrival, departure }: Props) {
+  if (!departure) return <></>
+
   return (
     <S.root>
       <LocationInfo
@@ -18,13 +20,17 @@ export function Locations({ arrival, departure }: Props) {
         description={departure.description}
       />
 
-      <S.line />
+      {arrival && (
+        <>
+          <S.line />
 
-      <LocationInfo
-        icon={FlagCheckered}
-        label={arrival.label}
-        description={arrival.description}
-      />
+          <LocationInfo
+            icon={FlagCheckered}
+            label={arrival.label}
+            description={arrival.description}
+          />
+        </>
+      )}
     </S.root>
   )
 }

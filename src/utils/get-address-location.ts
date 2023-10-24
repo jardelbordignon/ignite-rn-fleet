@@ -1,14 +1,14 @@
 import { reverseGeocodeAsync } from 'expo-location'
-import type { LocationObjectCoords } from 'expo-location'
 
-export async function getAddressLocation(coords: LocationObjectCoords) {
+type Props = {
+  latitude: number
+  longitude: number
+}
+
+export async function getAddressLocation(coords: Props) {
   try {
     const addressData = await reverseGeocodeAsync(coords)
-    const address = addressData[0]
-    if (!address) {
-      return
-    }
-    return address
+    return addressData[0]
   } catch (error) {
     console.log(error)
   }

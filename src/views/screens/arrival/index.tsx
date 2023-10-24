@@ -10,19 +10,29 @@ import { getLastSyncTimestamp } from 'src/libs/storage/sync'
 import { Historic } from 'src/libs/realm/schemas'
 import { stoptLocationTask } from 'src/tasks/background-location'
 import type { ArrivalNavigationProps } from 'src/types/navigation'
-import { Button, ButtonIcon, Header, Locations, Map } from 'src/views/components'
+import {
+  Button,
+  ButtonIcon,
+  Header,
+  LocationInfoProps,
+  Locations,
+  Map,
+} from 'src/views/components'
 import * as S from './styles'
+import { getAddressLocation } from 'src/utils'
 
 export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   const [dataNotSynced, setDataNotSynced] = useState(false)
   const [coords, setCoords] = useState<LatLng[]>([])
+  const [departure, setDeparture] = useState<LocationInfoProps>()
+  const [arrival, setArrival] = useState<LocationInfoProps>()
 
   const { id } = route.params
 
   const historicItem = useObject(Historic, new BSON.UUID(id))
   const realm = useRealm()
 
-  const isVehicleInUse = historicItem?.status === 'departure'
+  const isVehicleArrived = historicItem?.status === 'arrival'
 
   const cancelDeparture = async () => {
     realm.write(() => {
@@ -67,29 +77,60 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
     }
   }
 
-  const getLocationInfo = () => {
+  const getLocationInfo = async () => {
     if (!historicItem) return
 
     const lastSync = getLastSyncTimestamp()
     const updateAt = historicItem.updated_at.getTime()
     setDataNotSynced(updateAt > lastSync)
 
-    setCoords(isVehicleInUse ? getStorageLocations() : historicItem.coords)
+    setCoords(isVehicleArrived ? historicItem.coords : getStorageLocations())
+
+    if (isVehicleArrived) {
+      const firstCoords = historicItem.coords[0]
+
+      const departureAddressLocation = await getAddressLocation(firstCoords)
+
+      const departureDatetime = new Date(firstCoords.timestamp)
+        .toLocaleString('pt-BR', { hour12: false })
+        .trim()
+        .split(',')
+
+      setDeparture({
+        label: `Partida: ${departureAddressLocation?.name}`,
+        description: `${departureDatetime[0]} às ${departureDatetime[1]}`,
+      })
+
+      if (isVehicleArrived) {
+        const lastCoords = historicItem.coords[historicItem.coords.length - 1]
+
+        const arrivalAddressLocation = await getAddressLocation(lastCoords)
+
+        const arrivalDatetime = new Date(lastCoords.timestamp)
+          .toLocaleString('pt-BR', { hour12: false })
+          .trim()
+          .split(',')
+
+        setArrival({
+          label: `Destino: ${arrivalAddressLocation?.name}`,
+          description: `${arrivalDatetime[0]} às ${arrivalDatetime[1]}`,
+        })
+      }
+    }
   }
 
-  useEffect(getLocationInfo, [historicItem])
+  useEffect(() => {
+    getLocationInfo()
+  }, [historicItem])
 
   return (
     <S.root>
-      <Header title={isVehicleInUse ? 'Chegada' : 'Detalhes'} />
+      <Header title={isVehicleArrived ? 'Detalhes' : 'Chegada'} />
 
       {!!coords.length && <Map coords={coords} />}
 
       <S.content>
-        <Locations
-          arrival={{ description: 'Chegada', label: '' }}
-          departure={{ description: 'Saída', label: '' }}
-        />
+        <Locations departure={departure} arrival={arrival} />
 
         <S.label>Placa do veículo</S.label>
         <S.licensePlate>{historicItem?.license_plate}</S.licensePlate>
@@ -98,7 +139,7 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
         <S.description>{historicItem?.description}</S.description>
       </S.content>
 
-      {isVehicleInUse && (
+      {!isVehicleArrived && (
         <S.footer>
           <ButtonIcon icon={X} onPress={handleCancelDeparture} />
           <Button

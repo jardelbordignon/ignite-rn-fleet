@@ -4,10 +4,13 @@ import * as S from './styles'
 export type LocationInfoProps = {
   label: string
   description: string
+}
+
+type Props = LocationInfoProps & {
   icon: IconBoxProps
 }
 
-export function LocationInfo({ label, icon, description }: LocationInfoProps) {
+export function LocationInfo({ label, icon, description }: Props) {
   return (
     <S.root>
       <IconBox icon={icon} />
