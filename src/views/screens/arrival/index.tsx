@@ -42,10 +42,20 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   }
 
   const handleArrivalRegister = async () => {
+    if (!historicItem) {
+      return Alert.alert(
+        'Erro',
+        'Não foi possível obter dados para registar a chegada do veículo'
+      )
+    }
+
     try {
+      const storedLocations = getStorageLocations()
+
       realm.write(() => {
-        historicItem!.status = 'arrival'
-        historicItem!.updated_at = new Date()
+        historicItem.status = 'arrival'
+        historicItem.updated_at = new Date()
+        historicItem.coords.push(...storedLocations)
       })
 
       await stoptLocationTask()
@@ -64,8 +74,7 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
     const updateAt = historicItem.updated_at.getTime()
     setDataNotSynced(updateAt > lastSync)
 
-    const storedLocations = getStorageLocations()
-    setCoords(storedLocations)
+    setCoords(isVehicleInUse ? getStorageLocations() : historicItem.coords)
   }
 
   useEffect(getLocationInfo, [historicItem])
