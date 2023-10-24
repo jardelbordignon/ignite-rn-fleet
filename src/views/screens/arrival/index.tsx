@@ -58,13 +58,13 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   }
 
   const getLocationInfo = () => {
+    if (!historicItem) return
+
     const lastSync = getLastSyncTimestamp()
-    const updateAt = historicItem!.updated_at.getTime()
+    const updateAt = historicItem.updated_at.getTime()
     setDataNotSynced(updateAt > lastSync)
 
     const storedLocations = getStorageLocations()
-    console.log('storedLocations', storedLocations)
-
     setCoords(storedLocations)
   }
 
