@@ -2,6 +2,7 @@ import { X } from 'phosphor-react-native'
 import { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 import { BSON } from 'realm'
+import type { LatLng } from 'react-native-maps'
 
 import { useObject, useRealm } from 'src/libs/realm'
 import { getStorageLocations } from 'src/libs/storage/location'
@@ -9,11 +10,13 @@ import { getLastSyncTimestamp } from 'src/libs/storage/sync'
 import { Historic } from 'src/libs/realm/schemas'
 import { stoptLocationTask } from 'src/tasks/background-location'
 import type { ArrivalNavigationProps } from 'src/types/navigation'
-import { Button, ButtonIcon, Header } from 'src/views/components'
+import { Button, ButtonIcon, Header, Map } from 'src/views/components'
 import * as S from './styles'
 
 export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   const [dataNotSynced, setDataNotSynced] = useState(false)
+  const [coords, setCoords] = useState<LatLng[]>([])
+
   const { id } = route.params
 
   const historicItem = useObject(Historic, new BSON.UUID(id))
@@ -60,6 +63,8 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
 
     const storedLocations = getStorageLocations()
     console.log('storedLocations', storedLocations)
+
+    setCoords(storedLocations)
   }
 
   useEffect(getLocationInfo, [historicItem])
@@ -67,6 +72,8 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
   return (
     <S.root>
       <Header title={isVehicleInUse ? 'Chegada' : 'Detalhes'} />
+
+      {!!coords.length && <Map coords={coords} />}
 
       <S.content>
         <S.label>Placa do veículo</S.label>
