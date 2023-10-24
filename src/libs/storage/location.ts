@@ -17,6 +17,8 @@ export function getStorageLocations() {
 
 export function saveStorageLocation(location: LocationProps) {
   const locations = getStorageLocations()
+  const lastLocation = locations[locations.length - 1]
+  if (lastLocation === location) return
   locations.push(location)
   storage.set(STORAGE_KEY, JSON.stringify(locations))
 }

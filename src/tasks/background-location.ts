@@ -30,7 +30,7 @@ type Data = {
   locations: Location[]
 }
 
-defineTask<Data>(BACKGROUND_TASK_NAME, ({ data, error }) => {
+defineTask<Data>(BACKGROUND_TASK_NAME, async ({ data, error }) => {
   try {
     if (error) throw error
     if (!data) return
@@ -65,9 +65,7 @@ export async function stoptLocationTask() {
 
 export async function startLocationTask() {
   try {
-    const hasStarted = await hasStartedLocationUpdatesAsync(BACKGROUND_TASK_NAME)
-    if (hasStarted) return
-
+    await stoptLocationTask()
     await startLocationUpdatesAsync(BACKGROUND_TASK_NAME, {
       accuracy: Accuracy.Highest,
       distanceInterval: 1,

@@ -10,7 +10,7 @@ import { getLastSyncTimestamp } from 'src/libs/storage/sync'
 import { Historic } from 'src/libs/realm/schemas'
 import { stoptLocationTask } from 'src/tasks/background-location'
 import type { ArrivalNavigationProps } from 'src/types/navigation'
-import { Button, ButtonIcon, Header, Map } from 'src/views/components'
+import { Button, ButtonIcon, Header, Locations, Map } from 'src/views/components'
 import * as S from './styles'
 
 export function Arrival({ navigation, route }: ArrivalNavigationProps) {
@@ -86,6 +86,11 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
       {!!coords.length && <Map coords={coords} />}
 
       <S.content>
+        <Locations
+          arrival={{ description: 'Chegada', label: '' }}
+          departure={{ description: 'Saída', label: '' }}
+        />
+
         <S.label>Placa do veículo</S.label>
         <S.licensePlate>{historicItem?.license_plate}</S.licensePlate>
 
