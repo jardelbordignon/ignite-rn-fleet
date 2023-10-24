@@ -24,10 +24,12 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
 
   const isVehicleInUse = historicItem?.status === 'departure'
 
-  const cancelDeparture = () => {
+  const cancelDeparture = async () => {
     realm.write(() => {
       realm.delete(historicItem)
     })
+
+    await stoptLocationTask()
 
     navigation.goBack()
   }
@@ -41,13 +43,12 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
 
   const handleArrivalRegister = async () => {
     try {
-      await stoptLocationTask()
-
       realm.write(() => {
         historicItem!.status = 'arrival'
         historicItem!.updated_at = new Date()
       })
 
+      await stoptLocationTask()
       Alert.alert('Chegada', 'Chegada registrada com sucesso!')
       navigation.goBack()
     } catch (error) {
