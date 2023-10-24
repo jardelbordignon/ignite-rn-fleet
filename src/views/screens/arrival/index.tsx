@@ -4,6 +4,7 @@ import { Alert } from 'react-native'
 import { BSON } from 'realm'
 
 import { useObject, useRealm } from 'src/libs/realm'
+import { getStorageLocations } from 'src/libs/storage/location'
 import { getLastSyncTimestamp } from 'src/libs/storage/sync'
 import { Historic } from 'src/libs/realm/schemas'
 import { stoptLocationTask } from 'src/tasks/background-location'
@@ -52,10 +53,16 @@ export function Arrival({ navigation, route }: ArrivalNavigationProps) {
     }
   }
 
-  useEffect(() => {
+  const getLocationInfo = () => {
     const lastSync = getLastSyncTimestamp()
-    setDataNotSynced(historicItem!.updated_at.getTime() > lastSync)
-  }, [])
+    const updateAt = historicItem!.updated_at.getTime()
+    setDataNotSynced(updateAt > lastSync)
+
+    const storedLocations = getStorageLocations()
+    console.log('storedLocations', storedLocations)
+  }
+
+  useEffect(getLocationInfo, [historicItem])
 
   return (
     <S.root>
