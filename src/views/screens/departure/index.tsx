@@ -80,6 +80,10 @@ export function Departure({ navigation }: NavigationProps) {
 
       await startLocationTask()
 
+      if (!currentCoords) {
+        return Alert.alert('Erro', 'Não foi possível obter a localização atual')
+      }
+
       realm.write(() => {
         realm.create(
           'Historic',
@@ -87,6 +91,13 @@ export function Departure({ navigation }: NavigationProps) {
             user_id: user.id,
             description,
             license_plate: licensePlate,
+            coords: [
+              {
+                latitude: currentCoords.latitude,
+                longitude: currentCoords.longitude,
+                timestamp: new Date().getTime(),
+              },
+            ],
           })
         )
       })
@@ -163,17 +174,7 @@ export function Departure({ navigation }: NavigationProps) {
 
       <S.keyboardAwareScrollView>
         <ScrollView>
-          {currentCoords && (
-            <Map
-              coords={[
-                currentCoords,
-                {
-                  latitude: -28.3034,
-                  longitude: -52.800004,
-                },
-              ]}
-            />
-          )}
+          {currentCoords && <Map coords={[currentCoords]} />}
           <S.content>
             {currentAddress && (
               <LocationInfo
